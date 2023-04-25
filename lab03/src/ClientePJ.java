@@ -1,14 +1,16 @@
-import java.util.ArrayList;
+package lab03;
+
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class ClientePJ extends Cliente{
     private String cnpj;
-    private Date dataFuncacao;
+    private Date dataFundacao;
     
-    public ClientePJ(String nome, String endereco, ArrayList<Veiculo> listaVeiculos, String cnpj, Date dataFuncacao) {
-        super(nome, endereco, listaVeiculos, "PJ");
-        this.cnpj = cnpj;
-        this.dataFuncacao = dataFuncacao;
+    public ClientePJ(String nome, String endereco, String cnpj, Date dataFundacao){
+        super(nome, endereco, "PJ");
+        this.dataFundacao = dataFundacao;
+		this.cnpj = cnpj;
     }
 
     public String getCnpj() {
@@ -19,17 +21,22 @@ public class ClientePJ extends Cliente{
         this.cnpj = cnpj;
     }
 
-    public Date getDataFuncacao() {
-        return dataFuncacao;
+    public Date getdataFundacao() {
+        return dataFundacao;
     }
 
-    public void setDataFuncacao(Date dataFuncacao) {
-        this.dataFuncacao = dataFuncacao;
+    public void setdataFundacao(Date dataFundacao) {
+        this.dataFundacao = dataFundacao;
     }
 
-    @Override
+	public static String trataData(Date data){
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataFormatada = formato.format(data);
+		return (dataFormatada);
+	}
+
     public String toString() {
-        return super.toString() + "cnpj=" + cnpj + ", dataFuncacao=" + dataFuncacao;
+        return super.toString() + ", cnpj= " + cnpj + ", dataFundacao= " + trataData(dataFundacao);
     }
 
     private String corrigeCNPJ(String cnpjBruto) {
@@ -46,7 +53,7 @@ public class ClientePJ extends Cliente{
 
     private boolean igualChecker(String cnpjAnalise) {
 		char caracter = cnpjAnalise.charAt(0), proximo;
-		for (int i=1; i<11; i++) {
+		for (int i=1; i<14; i++) {
 			proximo = cnpjAnalise.charAt(i);
 			if (caracter == proximo) {
 				caracter = proximo;
@@ -64,7 +71,7 @@ public class ClientePJ extends Cliente{
 			soma += Character.getNumericValue(cpfAnalise.charAt(i))*(5-i);  
 		}
         for (int i=0; i<8; i++) {
-            soma += Character.getNumericValue(cpfAnalise.charAt(i+4)*(9-i));
+            soma += Character.getNumericValue(cpfAnalise.charAt(i+4))*(9-i);
         }
 		resto = soma%11;
 		if (resto<2) {
@@ -89,7 +96,7 @@ public class ClientePJ extends Cliente{
 			soma += Character.getNumericValue(cnpjAnalise.charAt(i))*(6-i);  
 		}
         for(int i=0; i<8; i++){
-            soma+=Character.getNumericValue(cnpjAnalise.charAt(i+5)*(9-i));
+            soma+=Character.getNumericValue(cnpjAnalise.charAt(i+5))*(9-i);
         }
 		resto = soma%11;
 		if (resto <2) {
@@ -123,10 +130,13 @@ public class ClientePJ extends Cliente{
 			System.out.println("Tamanho invalido");
 			return false;
 		} if (!igualChecker(cnpj)){
+			System.out.println("CNPJ INVALIDO!");
 			return false;
 		} if (!digitoChecker(cnpj)){
+			System.out.println("CNPJ INVALIDO!");
 			return false;
 		}
+		System.out.println("CNPJ VALIDO!");
 		return true;
     }
 }

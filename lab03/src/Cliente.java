@@ -1,19 +1,22 @@
+package lab03;
+
 import java.util.ArrayList;
 
 public class Cliente {
 	private String nome;
 	private String 	endereco;
-	public ArrayList<Veiculo> listaVeiculos = new ArrayList<Veiculo>();
+	public ArrayList<Veiculo> listaVeiculos;
 	public String tipoCliente;
 	
 	//Construtor
-	public Cliente(String nome, String endereco, ArrayList<Veiculo> listaVeiculos, String tipoCliente) {
+	public Cliente(String nome, String endereco, String tipoCliente) {
+		this.listaVeiculos = new ArrayList<Veiculo>();
 		this.nome = nome;
 		this.endereco = endereco;
-		this.listaVeiculos = listaVeiculos;
 		this.tipoCliente = tipoCliente; 
 	}
-	
+
+
 	//Getters e setters
 	public String getNome() {
 		return nome;
@@ -35,12 +38,12 @@ public class Cliente {
 		this.listaVeiculos=listaVeiculos;
 	}
 
+	public void adicionaVeiculo(Veiculo veiculo){
+		listaVeiculos.add(veiculo);
+	}
+
 	public String toString() {
-		return "Nome= " + nome + ", Endereco= " + endereco + ",ListaVeiculos =" + listaVeiculos;
+		return "Dados Clientes:\nNome= " + nome + ", Endereco= " + endereco + ", ListaVeiculos= " + listaVeiculos;
 	}
 }
-	
-	
-	
-	
 

@@ -1,19 +1,22 @@
+package lab03;
+
 import java.util.Random;
 import java.util.ArrayList;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Sinistro {
 	private static ArrayList<Integer> ids = new ArrayList<Integer>();
 	private static final int MAX = 100;// Define o valor maximo de clientes
 	private int id;
-	private String data;
+	private Date data;
 	private String endereco;
 	private Seguradora seguradora;
 	private Veiculo veiculo;
 	private Cliente cliente;
 	
 	//Construtor
-	public Sinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo,Cliente cliente) {
+	public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo,Cliente cliente) {
 		this.id = idGenerator();
 
 		this.data = data;
@@ -50,11 +53,11 @@ public class Sinistro {
 		this.id = id;
 	}
 
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 
@@ -94,8 +97,14 @@ public class Sinistro {
 		this.cliente = cliente;
 	}
 
-	@Override
-	public String toString() {
-		return "id=" + id + ", data=" + data + ", endereco=" + endereco + ", seguradora=" + seguradora+ ", veiculo=" + veiculo + ", cliente=" + cliente;
+	public String trataData(Date data){
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataFormatada = formato.format(data);
+		return (dataFormatada);
 	}
+
+    public String toString() {
+        return "Dados Sinistro:\nId= " + id + ", Data= " + trataData(data) + ", Endereco= " + endereco + ", Seguradora= " + seguradora.getNome() + ", Veiculo= " + veiculo + ", Cliente= " + cliente.getNome();
+    }
+
 }

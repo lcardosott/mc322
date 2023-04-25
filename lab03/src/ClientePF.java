@@ -1,5 +1,7 @@
+package lab03;
+
 import java.util.Date;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 
 public class ClientePF extends Cliente{
@@ -10,22 +12,14 @@ public class ClientePF extends Cliente{
     private Date dataNascimento;
     private String classeEconomica;
 
-    public ClientePF(String nome, String endereco, ArrayList<Veiculo> listaVeiculos,String cpf, String genero, Date dataLicenca,String educacao,Date dataNascimento, String classeEconomica)
-	throws Exception
-	{
-		super(nome, endereco, listaVeiculos, "PF");
+    public ClientePF(String nome, String endereco,String cpf, String genero, Date dataLicenca,String educacao,Date dataNascimento, String classeEconomica){
+		super(nome, endereco, "PF");
         this.genero = genero;
-        this.dataLicenca = dataLicenca;
+        this.dataLicenca = dataLicenca; 
         this.educacao = educacao;
+		this.cpf =cpf;
         this.dataNascimento = dataNascimento;
-        this.classeEconomica = classeEconomica;
-
-		if (validarCPF(cpf)){
-			this.cpf = cpf;
-		}else{
-			throw new Exception("CPF invalido");
-		}
-		
+        this.classeEconomica = classeEconomica;		
     }
 
     public String getCpf() {
@@ -76,9 +70,15 @@ public class ClientePF extends Cliente{
         this.classeEconomica = classeEconomica;
     }
 
+	public String trataData(Date data){
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataFormatada = formato.format(data);
+		return (dataFormatada);
+	}
+
     @Override
     public String toString() {
-        return super.toString() + "CPF: " + cpf + "Genero: "+ genero + "Data Licensa: " +dataLicenca + "Educacao: " + educacao + "Data Nascimento: " + dataNascimento + "Classe Economica: " + classeEconomica;
+        return super.toString() + "CPF= " + cpf + "Genero= "+ genero + "Data Licensa= " +trataData(dataLicenca) + "Educacao= " + educacao + "Data Nascimento= " + trataData(dataNascimento) + "Classe Economica= " + classeEconomica;
     }
 
     private String corrigeCPF(String cpfBruto) {
@@ -165,10 +165,13 @@ public class ClientePF extends Cliente{
 			System.out.println("Tamanho invalido");
 			return false;
 		} if (!igualChecker(cpf)){
+			System.out.println("CPF INVALIDO!");
 			return false;
 		} if (!digitoChecker(cpf)){
+			System.out.println("CPF INVALIDO!");
 			return false;
 		}
+		System.out.println("CPF VALIDO!");
 		return true;
 	}	
 

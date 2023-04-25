@@ -1,3 +1,5 @@
+package lab03;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,11 +10,11 @@ public class Main {
 
 	public static void printaMenu(int menu){
 		if (menu == 0){
-			System.out.println("\nConsulta de dados: \n\n1- Cadastrar Cliente \n2- Remover Cliente\n3- Listar Clientes\n4- Visualizar Sinistros\n0- Fechar aplicação");
+			System.out.println("\n***********************\nConsulta de dados: \n\n1- Cadastrar Cliente \n0- Fechar aplicação\n***********************\n");
 		}if (menu==1){
-			System.out.println("\nCadastrar Cliente: \n\n1- Cadastrar Cliente PF \n2- Cadastrar Cliente PJ\n0- Retornar");
+			System.out.println("\n***********************\nCadastrar Cliente: \n\n1- Cadastrar Cliente PF \n2- Cadastrar Cliente PJ\n0- Retornar\n***********************\n");
 		}if (menu==2){
-			System.out.println("\nAdicionar carro? \n\n1- Sim \n2- Não");
+			System.out.println("\n***********************\n\nAdicionar carro? \n\n1- Sim \n2- Não\n***********************\n");
 		}
 	}
 
@@ -55,14 +57,17 @@ public class Main {
 	}
 
 	public static Cliente coletaInfoCliente(Scanner scanner){
-		Date dataLicensa, dataNascimento;
 		printaMenu(1);
-		String linha = scanner.nextLine(), nome, endereco, cpf, genero, educacao, classeEconomica, nascimento, licensa;
+		String linha = scanner.nextLine();
 		int tipoCliente = Integer.parseInt(linha);
+
 		if (tipoCliente ==0){
 			return null;
 
 		}if (tipoCliente ==1){
+			Date dataLicensa, dataNascimento;
+			String nome, endereco, cpf, genero, educacao, classeEconomica, nascimento, licensa;
+
 			System.out.println("\nNome do Cliente:");
 			nome = scanner.nextLine();
 			System.out.println("\nEndereço do Cliente:");
@@ -74,7 +79,6 @@ public class Main {
 			System.out.println("\nData da licensa do Cliente:");
 			licensa = scanner.nextLine();
 			dataLicensa = trataData(licensa);
-
 			System.out.println("\nEducação do Cliente:");
 			educacao = scanner.nextLine();
 			System.out.println("\nData de nascimento do Cliente:");
@@ -83,13 +87,25 @@ public class Main {
 			
 			System.out.println("\nClasse economica do Cliente:");
 			classeEconomica = scanner.nextLine();
-			ArrayList<Veiculo> listaVeiculos = coletaInfoVeiculos(scanner);
 
-			ClientePF cliente = new ClientePF(nome, endereco, listaVeiculos, cpf, genero, dataLicensa, educacao, dataNascimento, classeEconomica );
+			ClientePF cliente = new ClientePF(nome, endereco, cpf, genero, dataLicensa, educacao, dataNascimento, classeEconomica);
 			return cliente;
 
 		}if (tipoCliente ==2){
-			
+			String nome, endereco, cnpj, fundacao;
+			Date dataFundacao;
+
+			System.out.println("\nNome da Empresa:");
+			nome = scanner.nextLine();
+			System.out.println("\nEndereço da Empresa:");
+			endereco = scanner.nextLine();
+			System.out.println("\nCNPJ da Empresa");
+			cnpj = scanner.nextLine();
+			System.out.println("\nData de Fundação da Empresa:");
+			fundacao = scanner.nextLine();
+			dataFundacao = trataData(fundacao);
+			ClientePJ cliente = new ClientePJ(nome, endereco, cnpj, dataFundacao);
+			return cliente;
 		}
 		return null;
 	}
@@ -98,6 +114,12 @@ public class Main {
 	public static void acessaInformacao(int numero, Scanner scanner){
 		if(numero == 1){
 			Cliente novoCliente = coletaInfoCliente(scanner);
+			if (novoCliente == null){
+				return;
+			}else{
+
+				System.out.println("Cliente cadastrado com sucesso");
+			}
 		}if(numero == 2){
 
 		}if(numero == 3){
@@ -107,14 +129,51 @@ public class Main {
 		}
 	}
 
+
+
 	public static void main(String[] args) {
-		int menu_atual = 0;
+
+// Instanciação e teste de funções pedidas no lab
+		ClientePJ clientePJ = new ClientePJ("TechNow", "Rua Hermantino Coelho", "33.024.746/0001-94",trataData("03/10/2018"));
+		ClientePF clientePF = new ClientePF("Lucas Cardoso", "Rua Vilela 325", "49315089871", "M", trataData("18/04/2022"), "Basica", trataData("02/03/2004"), "Média");
+
+		clientePJ.validarCNPJ(clientePJ.getCnpj());
+		clientePF.validarCPF(clientePF.getCpf());
+
+		Veiculo veiculo = new Veiculo("", "Ford", "Ka", 2010);
+		clientePF.adicionaVeiculo(veiculo);
+
+		Seguradora seguradora = new Seguradora("LiveFree", "3278-9956", "caiogestor@livefree.com", "Avenida Brasil 815");
+
+		seguradora.cadastrarCliente(clientePF);
+		seguradora.cadastrarCliente(clientePJ);
+
+		Sinistro sinistro = new Sinistro(trataData("22/08/2021"), "Rua Roxo Moreira 1297", seguradora, veiculo, clientePF);
+
+		seguradora.gerarSinistro(sinistro);
+
+		System.out.println(clientePF.toString()+ '\n');
+		System.out.println(clientePJ.toString()+ '\n');
+		System.out.println(seguradora.toString()+ '\n');
+		System.out.println(sinistro.toString()+ '\n');
+		System.out.println(seguradora.toString()+ '\n');
+
+		seguradora.listarClientes("PF");
+		System.out.println('\n');
+		seguradora.listarSinistros();
+		System.out.println('\n');
+		seguradora.visualizarSinistro(clientePF);
+		System.out.println('\n');
+
+
+// Implementação de menu interativo
+		boolean on = true;
 		Scanner scanner = new Scanner(System.in);
-		while(menu_atual>=0){
-			printaMenu(menu_atual);
+		while(on){
+			printaMenu(0);
 			int numero = Integer.parseInt(scanner.nextLine());
 			if(numero == 0){
-				menu_atual --;
+				on = false;
 			}
 			acessaInformacao(numero, scanner);
 		}

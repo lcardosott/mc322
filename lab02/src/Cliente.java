@@ -1,3 +1,6 @@
+package lab02;
+
+import java.util.ArrayList;
 
 public class Cliente {
 	private String nome;
