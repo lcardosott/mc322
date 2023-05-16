@@ -128,9 +128,6 @@ public class Main {
 
 		}
 	}
-
-
-
 	public static void main(String[] args) {
 
 // Instanciação e teste de funções pedidas no lab
